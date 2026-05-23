@@ -12,9 +12,14 @@ namespace Gauss_Jordan_algorithm
             int x = 0;
         }
 
-        public static void GausSolving(double[][] matrix)
+        public static void GaussSolving(double[][] matrix)
         {
             MatrixDivide(matrix, 0, 0);
+            for (int i = 1; i < matrix.Length; i++)
+            {
+                MatrixSubstract(matrix, i, 0, 0);
+            }
+            
         }
 
         public static void MatrixDivide(double[][] matrix, int row, int number)
@@ -26,6 +31,24 @@ namespace Gauss_Jordan_algorithm
             }
         }
 
+        public static void MatrixSubstract(double[][] matrix, int mainRow, int secondaryRow, int target)
+        {
+            while (matrix[mainRow][target] != 0)
+            {
+                if (matrix[mainRow][target] > 0)
+                    for (int i = 0; i < matrix.Length; i++)
+                    {
+                        matrix[mainRow][i] = matrix[mainRow][i] - matrix[secondaryRow][i];
+                    }
+                else
+                {
+                    for (int i = 0; i < matrix.Length; i++)
+                    {
+                        matrix[mainRow][i] = matrix[mainRow][i] + matrix[secondaryRow][i];
+                    }
+                }
+            }
+        }
 
         public static void ShowMatrix(double[][] matrix)
         {
@@ -48,7 +71,7 @@ namespace Gauss_Jordan_algorithm
 
             ];
 
-            MatrixDivide(matrix, 0, 0);
+            GaussSolving(matrix);
 
             ShowMatrix(matrix);
             Console.ReadLine();
