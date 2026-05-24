@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Gauss_Jordan_algorithm
 {
@@ -12,9 +13,37 @@ namespace Gauss_Jordan_algorithm
             int x = 0;
         }
 
+        /// <summary>
+        /// Checks how many solution the matrix have.
+        /// </summary>
+        /// <param name="matrix">The matrix we are working on</param>
+        /// <returns></returns>
+        public static int MatrixCheckingBefore(double[][] matrix)
+        {
+            
+            for (int i = 0; i < matrix.Length ; i++)
+            {
+                bool temp;
+                int counter = 0;
+                for (int j = 0; j < matrix.Length; j++)
+                {
+                    if (matrix[i][j] == 0)
+                        counter++;
+                    
+                }
+                if (counter == matrix.Length)
+                    if (matrix[i][matrix.Length] == 0)
+                        return -1;
+                    else
+                        return 0;
+                
+            }
+            return 1;
+        }
+
         public static void GaussSolving(double[][] matrix)
         {
-            for (int i = 0; i < matrix.Length; i++)
+            for (int i = 0; i < matrix.Length; i++)    
             {
                 MatrixDivide(matrix, i, i);
                 if (i != matrix.Length - 1)
@@ -37,7 +66,13 @@ namespace Gauss_Jordan_algorithm
                 }      
             }
         }
-
+        /// <summary>
+        /// Normalizes a specific row by dividing all its elements by the value at the specified diagonal position.
+        /// This makes the diagonal element equal to 1.
+        /// </summary>
+        /// <param name="matrix">The augmented matrix being solved.</param>
+        /// <param name="row">The index of the row to be normalized.</param>
+        /// <param name="number">The index of the column containing the divisor (diagonal element).</param>
         public static void MatrixDivide(double[][] matrix, int row, int number)
         {
             double temp = matrix[row][number];
@@ -47,6 +82,13 @@ namespace Gauss_Jordan_algorithm
             }
         }
 
+        /// <summary>
+        /// Subtracts one row from another to make a zero in the target column.
+        /// </summary>
+        /// <param name="matrix">The matrix we are working on.</param>
+        /// <param name="mainRow">The row we are changing.</param>
+        /// <param name="secondaryRow">The row we use to subtract.</param>
+        /// <param name="target">The index of the column to set to zero.</param>
         public static void MatrixSubstract(double[][] matrix, int mainRow, int secondaryRow, int target)
         {
             double coefficient = matrix[mainRow][target];
@@ -55,14 +97,17 @@ namespace Gauss_Jordan_algorithm
                 matrix[mainRow][i] = matrix[mainRow][i] - coefficient * matrix[secondaryRow][i];
             }
         }
-
+        /// <summary>
+        /// displays 2-dimensional matrix on the console.
+        /// </summary>
+        /// <param name="matrix">The matrix we are working on.</param>
         public static void ShowMatrix(double[][] matrix)
         {
             for (int i = 0; i < matrix.Length; i++)
             {
                 for (int j = 0; j < matrix.Length + 1; j++)
                 {
-                    Console.Write(matrix[i][j] + "---");
+                    Console.Write(matrix[i][j] + "||");
                 }
                 Console.WriteLine("");
             }
@@ -70,17 +115,16 @@ namespace Gauss_Jordan_algorithm
         static void Main(string[] args)
         {
             double[][] matrix =
-[
-    [1,  1,  1,  1,  1,  15], // 1 + 2 + 3 + 4 + 5 = 15
-    [2, -1,  3,  1, -1,   8], // 2(1) - 2 + 3(3) + 4 - 5 = 9  (ТУТ КІНЦЕВА 9!)
-    [1,  3, -1,  2,  2,  22], // 1 + 3(2) - 3 + 2(4) + 2(5) = 22
-    [3,  1,  2, -1,  1,  12], // 3(1) + 2 + 2(3) - 4 + 5 = 12
-    [1,  2,  1, -3,  1,  1]
-];
+            [
+            [2, 6, 9],
+            [1, 2, 3]
+            ];
 
+
+            Console.WriteLine(MatrixChecking(matrix));
             GaussSolving(matrix);
-
             ShowMatrix(matrix);
+
             Console.ReadLine();
         }
     }
