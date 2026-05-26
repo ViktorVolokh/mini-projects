@@ -4,13 +4,21 @@ using System.Reflection.Metadata.Ecma335;
 namespace Gauss_Jordan_algorithm
 {
 
-   
     internal class Program
     {
+        
+        public static void MatrixInitialisation(double[][] matrix)
+        {
+            Console.WriteLine("write your matrix:");
+            for (int i = 0; i < matrix.Length ; i++)
+            {
+                for (int j = 0; j < matrix.Length + 1; j++)
+                {
+                    matrix[i][j] = Convert.ToDouble(Console.ReadLine());
 
-        public static void InitialisationMatrix()
-        { 
-            int x = 0;
+                }
+                Console.WriteLine($"the row {i+1} is filled");
+            }
         }
 
         /// <summary>
@@ -41,30 +49,39 @@ namespace Gauss_Jordan_algorithm
             return 1;
         }
 
+
         public static void GaussSolving(double[][] matrix)
         {
-            for (int i = 0; i < matrix.Length; i++)    
+            int temp = MatrixCheckingBefore(matrix);
+            if (temp == 1)
             {
-                MatrixDivide(matrix, i, i);
-                if (i != matrix.Length - 1)
+                for (int i = 0; i < matrix.Length; i++)
                 {
-                    for (int j = i + 1; j < matrix.Length; j++)
+                    MatrixDivide(matrix, i, i);
+                    if (i != matrix.Length - 1)
                     {
-                        MatrixSubstract(matrix, j, i, i);
+                        for (int j = i + 1; j < matrix.Length; j++)
+                        {
+                            MatrixSubstract(matrix, j, i, i);
+                        }
+                    }
+                }
+                for (int i = matrix.Length - 1; i > -1; i--)
+                {
+
+                    for (int j = matrix.Length - 1; j > -1; j--)
+                    {
+                        if (i != j)
+                        {
+                            MatrixSubstract(matrix, j, i, i);
+                        }
                     }
                 }
             }
-            for (int i = matrix.Length - 1; i > -1; i--)
-            {
-
-                for (int j = matrix.Length - 1; j > -1; j--)
-                {
-                    if (i != j)
-                    {
-                        MatrixSubstract(matrix, j, i, i);
-                    }
-                }      
-            }
+            else if(temp == 0)
+                Console.WriteLine("no solutions");
+            else
+                Console.WriteLine("infinity solutions");
         }
         /// <summary>
         /// Normalizes a specific row by dividing all its elements by the value at the specified diagonal position.
@@ -107,21 +124,23 @@ namespace Gauss_Jordan_algorithm
             {
                 for (int j = 0; j < matrix.Length + 1; j++)
                 {
-                    Console.Write(matrix[i][j] + "||");
+                    Console.Write(matrix[i][j] + "|");
                 }
                 Console.WriteLine("");
             }
         }
         static void Main(string[] args)
         {
-            double[][] matrix =
-            [
-            [2, 6, 9],
-            [1, 2, 3]
-            ];
 
+            Console.WriteLine("How many rows does your matrix cointain?");
+            int row = Convert.ToInt32(Console.ReadLine()); // using convert because this is project for me and not for idiots
 
-            Console.WriteLine(MatrixChecking(matrix));
+            double[][] matrix = new double[row][];
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                matrix[i] = new double[row + 1];
+            }
+            MatrixInitialisation(matrix);
             GaussSolving(matrix);
             ShowMatrix(matrix);
 
