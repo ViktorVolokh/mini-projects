@@ -1,13 +1,17 @@
-﻿namespace Permutatio;
-
+﻿using System.Security.Cryptography;
+using System;
+namespace Permutatio;
 class Program
 {
+
     public static void FillArray(int[] array)
     {
         for (int i = 0; i < array.Length; i++)
         {
             array[i] = i + 1;
         }
+        Random random = new Random();
+        random.Shuffle(array);
     }
 
     public static void ShowArray(int[] array)
