@@ -4,14 +4,28 @@ class Program
 {
     public static double GeneraliseExperiment(int[] array)
     {
-        
-        int[] data = new int[array.Length * 10/* for more accuracy use more multiplicators such as 1000000*/];
-        for (int i = 0; i < array.Length * 10 /* for more accuracy use more multiplicators such as 1000000*/; i++)
+        int sum = 0;
+        for (int i = 0; i < array.Length-1; i++)
         {
-            ShuffleTwoElements(array);
-            data[i] = CountInversions(array);
+            for (int j = i+1; j < array.Length; j++)
+            {
+                SwapTwoElements(array, i, j);
+                sum += CountInversions(array);
+                SwapTwoElements(array, i, j);
+            }
         }
-        return data.Average();
+
+        int allSwapVariants = array.Length * (array.Length - 1) / 2;
+        sum = sum / allSwapVariants;
+        return sum;
+    }
+    
+
+    public static void SwapTwoElements(int[] array, int element1, int element2)
+    {
+        int temp = array[element1];
+        array[element1] = array[element2];
+        array[element2] = temp;
     }
 
     public static void ShuffleTwoElements(int[] array)
