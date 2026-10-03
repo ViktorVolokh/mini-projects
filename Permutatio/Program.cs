@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using System;
+﻿
 namespace Permutatio;
 class Program
 {
@@ -16,6 +15,22 @@ class Program
         int temp = array[num1];
         array[num1] = array[num2];
         array[num2] = temp;
+    }
+
+    public static int CountInversions(int[] array)
+    {
+        int count = 0;
+        for (int i = 0; i < array.Length; i++)
+        {
+            for (int j = i; j < array.Length - 1; j++)
+            {
+                if (array[i] > array[j + 1])
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 
     public static void FillArray(int[] array)
@@ -45,7 +60,11 @@ class Program
         int[] permutation = new int[n];
         FillArray(permutation);
         ShowArray(permutation);
+        Console.WriteLine();
+        Console.WriteLine(CountInversions(permutation));
         ShuffleTwoElements(permutation);
         ShowArray(permutation);
+        Console.WriteLine();
+        Console.WriteLine(CountInversions(permutation));
     }
 }
