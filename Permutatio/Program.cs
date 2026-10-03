@@ -2,6 +2,17 @@
 namespace Permutatio;
 class Program
 {
+    public static double GeneraliseExperiment(int[] array)
+    {
+        
+        int[] data = new int[array.Length * 10/* for more accuracy use more multiplicators such as 1000000*/];
+        for (int i = 0; i < array.Length * 10 /* for more accuracy use more multiplicators such as 1000000*/; i++)
+        {
+            ShuffleTwoElements(array);
+            data[i] = CountInversions(array);
+        }
+        return data.Average();
+    }
 
     public static void ShuffleTwoElements(int[] array)
     {
@@ -40,7 +51,7 @@ class Program
             array[i] = i + 1;
         }
         Random random = new Random();
-        random.Shuffle(array);
+        //random.Shuffle(array);
     }
 
     public static void ShowArray(int[] array)
@@ -61,10 +72,12 @@ class Program
         FillArray(permutation);
         ShowArray(permutation);
         Console.WriteLine();
-        Console.WriteLine(CountInversions(permutation));
+        /*Console.WriteLine(CountInversions(permutation));
         ShuffleTwoElements(permutation);
         ShowArray(permutation);
         Console.WriteLine();
-        Console.WriteLine(CountInversions(permutation));
+        Console.WriteLine(CountInversions(permutation));*/
+        Console.WriteLine("answer:");
+        Console.WriteLine(GeneraliseExperiment(permutation));
     }
 }
