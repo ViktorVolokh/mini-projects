@@ -4,6 +4,20 @@ namespace Permutatio;
 class Program
 {
 
+    public static void ShuffleTwoElements(int[] array)
+    {
+        Random random = new Random();
+        int num1 = random.Next(0, array.Length);
+        int num2 = random.Next(0, array.Length);
+        while (num1==num2)
+        {
+            num2 = random.Next(0, array.Length);
+        }
+        int temp = array[num1];
+        array[num1] = array[num2];
+        array[num2] = temp;
+    }
+
     public static void FillArray(int[] array)
     {
         for (int i = 0; i < array.Length; i++)
@@ -30,6 +44,8 @@ class Program
         }
         int[] permutation = new int[n];
         FillArray(permutation);
+        ShowArray(permutation);
+        ShuffleTwoElements(permutation);
         ShowArray(permutation);
     }
 }
