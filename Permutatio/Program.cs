@@ -4,18 +4,19 @@ class Program
 {
     public static double GeneraliseExperiment(int[] array)
     {
-        int sum = 0;
+        int inversionsNumber = CountInversions(array);
+        double sum = 0;
         for (int i = 0; i < array.Length-1; i++)
         {
             for (int j = i+1; j < array.Length; j++)
             {
                 SwapTwoElements(array, i, j);
-                sum += CountInversions(array);
+                sum += CountInversions(array,  i, j, inversionsNumber);
                 SwapTwoElements(array, i, j);
             }
         }
 
-        int allSwapVariants = array.Length * (array.Length - 1) / 2;
+        double allSwapVariants = array.Length * (array.Length - 1) / 2;
         sum = sum / allSwapVariants;
         return sum;
     }
@@ -58,6 +59,35 @@ class Program
         return count;
     }
 
+    public static int CountInversions(int[] array, int num1, int num2, int startInversionsNumber)
+    {
+        int count = startInversionsNumber;
+        for (int i = num1; i < num2; i++)
+        {
+            if (array[num1] > array[i + 1])
+            {
+                count++;
+            }
+        }
+        for (int i = num2-1; i > num1; i--)
+        {
+            if (array[i] > array[num2])
+            {
+                count++;
+            }
+        }
+        SwapTwoElements(array, num1, num2);
+        for (int i = num1; i < num2; i++)
+        {
+            if (array[num1] > array[i + 1])
+            {
+                count--;
+            }
+        }
+        SwapTwoElements(array, num1, num2);
+        return count;
+    }
+
     public static void FillArray(int[] array)
     {
         for (int i = 0; i < array.Length; i++)
@@ -65,7 +95,7 @@ class Program
             array[i] = i + 1;
         }
         Random random = new Random();
-        //random.Shuffle(array);
+        random.Shuffle(array);
     }
 
     public static void ShowArray(int[] array)
