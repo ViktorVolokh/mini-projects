@@ -2,6 +2,7 @@
 namespace Permutatio;
 class Program
 {
+    public delegate void Results(int[] array, out long allSwapVariants, out long sum);
     public static double GeneraliseExperiment(int[] array)
     {
         int inversionsNumber = CountInversions(array);
@@ -16,11 +17,43 @@ class Program
             }
         }
 
-        double allSwapVariants = array.Length * (array.Length - 1) / 2;
+        long allSwapVariants = array.Length * (array.Length - 1) / 2;
         sum = sum / allSwapVariants;
         return sum;
     }
-    
+
+    public static void GeneraliseExperiment(int[] array, out long allSwapVariants, out long sum)
+    {
+        int inversionsNumber = CountInversions(array);
+        sum = 0;
+        for (int i = 0; i < array.Length-1; i++)
+        {
+            for (int j = i+1; j < array.Length; j++)
+            {
+                SwapTwoElements(array, i, j);
+                sum += CountInversions(array,  i, j, inversionsNumber);
+                SwapTwoElements(array, i, j);
+            }
+        }
+
+        allSwapVariants = array.Length * (array.Length - 1) / 2;
+    }
+    public static void Output(int[] array, Results results)
+    {
+        results(array, out long allSwapVariants, out long sum);
+        int i = 2;
+        while (i < allSwapVariants || i < sum)
+        {
+            if (sum % i == 0 && allSwapVariants % i == 0)
+            {
+                sum /= i;
+                allSwapVariants /= i;
+                i = 1;
+            }
+            i++;
+        }
+        Console.WriteLine($"{sum} / {allSwapVariants}");
+    }
 
     public static void SwapTwoElements(int[] array, int element1, int element2)
     {
@@ -95,7 +128,7 @@ class Program
             array[i] = i + 1;
         }
         Random random = new Random();
-        random.Shuffle(array);
+        //random.Shuffle(array);
     }
 
     public static void ShowArray(int[] array)
@@ -122,6 +155,6 @@ class Program
         Console.WriteLine();
         Console.WriteLine(CountInversions(permutation));*/
         Console.WriteLine("answer:");
-        Console.WriteLine(GeneraliseExperiment(permutation));
+        Output(permutation, GeneraliseExperiment);
     }
 }
